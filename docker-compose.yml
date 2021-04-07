@@ -1,9 +1,7 @@
 version: "3.8"
 services:
   api:
-    build:
-      context: ./api/
-      dockerfile: Dockerfile
+    build: ./api/
     command: /bin/sh -c "rm -f /one_plate/tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     ports:
       - "3000:3000"
@@ -15,15 +13,12 @@ services:
     tty: true
     stdin_open: true
   frontend:
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    build: ./frontend/
     command: sh -c "cd frontend && yarn start"
     ports:
       - "8000:3000"
     volumes:
-      - ./:/usr/src/app
-      - /usr/src/app/node_modules
+      - ./frontend:/usr/src/app
     depends_on:
       - api
   db:
@@ -37,3 +32,4 @@ services:
       - db-volume:/var/lib/mysql
 volumes:
   db-volume:
+
